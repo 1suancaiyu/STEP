@@ -9,17 +9,20 @@ import torchlight
 
 
 base_path = os.path.dirname(os.path.realpath(__file__))
-data_path = os.path.join(base_path, '../data/')
+print("wsx base_path",base_path)
+data_path = os.path.join(base_path, '../data')
+print("wsx data_patch",data_path)
 # wsx
 # origin
-ftype = '4DCVAEGCN'
+ftype = '_ELMD'
 # changed
-ftype = ''
+# ftype = ''
 
 coords = 3
 joints = 16
 cycles = 1
 model_path = os.path.join(base_path, 'model_classifier_stgcn/features'+ftype)
+print("wsx model_path",model_path)
 
 
 parser = argparse.ArgumentParser(description='Gait Gen')
@@ -75,6 +78,14 @@ data, labels,\
     data_train, labels_train,\
     data_test, labels_test = loader.load_data(data_path, ftype, coords, joints,
                                               cycles=cycles, test_size=test_size)
+print("wsx data.shape",data.shape)
+print("wsx labels.shape",labels.shape)
+print("wsx data_train.shape",data_train.shape)
+print("wsx labels_train.shape",labels_train.shape)
+print("wsx data_test.shape",data_test.shape)
+print("wsx data_test.shape",data_test.shape)
+print("wsx data \n",data,"\n")
+print("wsx labels \n",labels,"\n")
 num_classes = np.unique(labels).shape[0]
 graph_dict = {'strategy': 'spatial'}
 emotions = ['Angry', 'Neutral', 'Happy', 'Sad']

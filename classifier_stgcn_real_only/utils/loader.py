@@ -14,6 +14,7 @@ from torchvision import datasets, transforms
 def load_data(_path, _ftype, coords, joints, cycles=3, test_size=0.1):
 
     file_feature = os.path.join(_path, 'features' + _ftype + '.h5')
+    print("wsx file_feature",file_feature)
     ff = h5py.File(file_feature, 'r')
     file_label = os.path.join(_path, 'labels' + _ftype + '.h5')
     fl = h5py.File(file_label, 'r')

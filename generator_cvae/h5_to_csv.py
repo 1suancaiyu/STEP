@@ -3,7 +3,7 @@ import h5py
 import os
 import numpy as np
 
-savepath = 'C:/Users/Uttaran/Documents/Unity3D/Gait/Data/CVAEGCN/4D/Pos'
+savepath = '/home/wsx/STEP/data'
 
 filename = 'features4DCVAEGCN.h5'
 f = h5py.File(filename, 'r')

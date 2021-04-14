@@ -9,6 +9,7 @@ import torchlight
 
 base_path = os.path.dirname(os.path.realpath(__file__))
 data_path = os.path.join(base_path, '../data')
+print("wsx data_path",data_path)
 ftype_real = ''
 ftype_synth = 'CVAEGCN_best'
 coords = 3

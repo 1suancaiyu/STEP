@@ -14,7 +14,7 @@ data_path = os.path.join(base_path, '../data')
 print("wsx data_patch",data_path)
 # wsx
 # origin
-ftype = '_ELMD'
+ftype = 'CVAEGCN_1_2000'
 # changed
 # ftype = ''
 

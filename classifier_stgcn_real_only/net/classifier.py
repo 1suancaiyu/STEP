@@ -51,6 +51,7 @@ class Classifier(nn.Module):
         ))
 
         # initialize parameters for edge importance weighting
+        # wsx
         if edge_importance_weighting:
             self.edge_importance = nn.ParameterList([
                 nn.Parameter(torch.ones(self.A.size()))
@@ -112,7 +113,7 @@ class Classifier(nn.Module):
 
         return output, feature
 
-
+# wsx
 class st_gcn(nn.Module):
     r"""Applies a spatial temporal graph convolution over an input graph sequence.
     Args:

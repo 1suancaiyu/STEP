@@ -3,6 +3,11 @@ import os
 import numpy as np
 from utils import loader, processor
 
+#wsx
+import sys
+import numpy
+numpy.set_printoptions(threshold=sys.maxsize)
+
 
 import torch
 import torchlight
@@ -14,7 +19,7 @@ data_path = os.path.join(base_path, '../data')
 print("wsx data_patch",data_path)
 # wsx
 # origin
-ftype = 'CVAEGCN_1_2000'
+ftype = '_ELMD'
 # changed
 # ftype = ''
 

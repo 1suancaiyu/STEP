@@ -230,6 +230,7 @@ class Processor(object):
             self.show_epoch_info()
 
     def train(self):
+        print("log train() enter")
 
         for epoch in range(self.args.start_epoch, self.args.num_epoch):
             self.meta_info['epoch'] = epoch

@@ -91,6 +91,7 @@ if args.train:
     if args.delete_previous:
         shutil.rmtree(model_path)
         os.mkdir(model_path)
+    # suancaiyu
     pr.train()
 else:
     data_loader = list()

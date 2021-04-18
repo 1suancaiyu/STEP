@@ -95,6 +95,8 @@ def get_affective_features(gaits):
     # 10: rhip, 11: rknee, 12: rfoot
     # 13: lhip, 14: lknee, 15: lfoot
 
+    print("log: enter get_affective_features(gaits)")
+    print("log: gaits.shape",gaits.shape)
     num_samples = gaits.shape[0]
     num_tsteps = gaits.shape[1]
     num_features = 175
@@ -103,6 +105,10 @@ def get_affective_features(gaits):
     Y = np.array(get_joints(gaits, 0, 0)).transpose()
     for sidx in range(num_samples):
         X = np.array(get_joints(gaits, sidx, 0)).transpose()
+        # print("log: Y shape",Y.shape)
+        # print("log: X shape",X.shape)
+        # print("log: Y content: ",Y)
+        # print("log: X content: ",X)
         R, c, t = get_transformation(X, Y)
         for tidx in range(num_tsteps):
             fidx = 0
@@ -224,18 +230,14 @@ def get_affective_features(gaits):
                                  affective_features[sidx, tidx - 1, fidx+4:fidx+7])
                 fidx += 8
 
+    print("log: attective_features unreshape: ",affective_features.shape)
     return affective_features
-
-
 def get_transformation(X, Y):
     """
-
     Args:
         X: k x n source shape
         Y: k x n destination shape such that Y[:, i] is the correspondence of X[:, i]
-
     Returns: rotation R, scaling c, translation t such that ||Y - (cRX+t)||_2 is minimized.
-
     """
     """
     Copyright: Carlo Nicolini, 2013
@@ -259,14 +261,13 @@ def get_transformation(X, Y):
     V = V.T.copy()
     #print U,"\n\n",D,"\n\n",V
     r = np.linalg.matrix_rank(M)
-    d = np.linalg.det(M)
     S = np.eye(m)
     if r > (m - 1):
         if np.linalg.det(M) < 0:
-            S[m, m] = -1
+            S[m - 1, m - 1] = -1
     elif r == m - 1:
         if np.linalg.det(U) * np.linalg.det(V) < 0:
-            S[m, m] = -1
+            S[m - 1, m - 1] = -1
     else:
         R = np.eye(2)
         c = 1

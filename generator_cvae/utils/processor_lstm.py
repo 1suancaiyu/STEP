@@ -140,6 +140,12 @@ class Processor(object):
         train_loader = self.data_loader['train']
         loss_value = []
 
+        # wsx
+        data = data.float().to(self.device)
+        ldec = label.float().to(self.device)
+        lenc = ldec.unsqueeze(1).repeat([1, data.shape[1], 1])
+        output, self.mean, self.lsig, _ = self.model(data, lenc, ldec)
+
         for data, label in train_loader:
             # get data
             data = data.float().to(self.device)
@@ -279,7 +285,7 @@ class Processor(object):
                     gen_seqs[cls, :, :] = gen_seq_curr.cpu().numpy()[:, :, :self.V*self.C]
             for idx in range(gen_seqs.shape[0]):
                 h5Featr.create_dataset(str(count + 1).zfill(fill) + '_' + emotions[idx],
-                                       data=loader.descale(gen_seqs[idx, :, :], self.data_max, self.data_min))
+                                       global data=loader.descale(gen_seqs[idx, :, :], self.data_max, self.data_min))
                 # h5Featr.create_dataset(str(count + 1).zfill(fill) + '_' + emotions[idx], data=gen_seqs[idx, :, :])
                 h5Label.create_dataset(str(count + 1).zfill(fill) + '_' + emotions[idx], data=idx)
             print('\rGenerating data: {:d} of {:d} ({:.2f}%).'

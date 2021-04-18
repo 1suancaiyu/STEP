@@ -11,12 +11,15 @@ from utils import common
 import torch
 from torchvision import datasets, transforms
 
-
+print("log: enter loader_st_gcn.py")
 def load_data(_path, _ftype, coords, joints, cycles=3):
+    print("log: enter load_data()")
 
     file_feature = os.path.join(_path, 'features' + _ftype + '.h5')
+    print("log file_feature",file_feature)
     ff = h5py.File(file_feature, 'r')
     file_label = os.path.join(_path, 'labels' + _ftype + '.h5')
+    print("log file_lable",file_label)
     fl = h5py.File(file_label, 'r')
 
     data_list = []
@@ -32,11 +35,15 @@ def load_data(_path, _ftype, coords, joints, cycles=3):
         labels[si] = fl[list(fl.keys())[si]][()]
 
     data = np.empty((num_samples, time_steps*cycles, joints*coords))
+    print("log st_gcn load_data data.shape",data.shape)
     for si in range(num_samples):
         data_list_curr = np.tile(data_list[si], (int(np.ceil(time_steps / len(data_list[si]))), 1))
         for ci in range(cycles):
             data[si, time_steps * ci:time_steps * (ci + 1), :] = data_list_curr[0:time_steps]
+    # wsx
     data = common.get_affective_features(np.reshape(data, (data.shape[0], data.shape[1], joints, coords)))[:, :, :48]
+    print("log: get_affective_features data shape",data.shape)
+    print("log: get_affective_features data content\n",data)
     data_train, data_test, labels_train, labels_test = train_test_split(data, labels, test_size=0.1)
     return data_train, data_test, labels_train, labels_test
 
@@ -62,13 +69,23 @@ def to_categorical(y, num_classes):
 
 class TrainTestLoader(torch.utils.data.Dataset):
 
-    def __init__(self, data, joints, coords, label, num_classes):
+    # def __init__(self, data, joints, coords, label, num_classes):
+    # wsx
+    def __init__(self, data, label, joints, coords, num_classes):
         # data: N C T J
+        print(" log: TrainTestLoader joints:\n",joints)
+        print(" log: TrainTestLoader coords:",coords)
+
+        # self.data = np.reshape(data, (data.shape[0], data.shape[1], joints, coords, 1))
+        # wsx
         self.data = np.reshape(data, (data.shape[0], data.shape[1], joints, coords, 1))
+
         self.data = np.moveaxis(self.data, [1, 2, 3], [2, 3, 1])
 
         # load label
         self.label = tf.keras.utils.to_categorical(label, num_classes)
+        # wsx
+        # self.label = label
 
         self.N, self.C, self.T, self.J, self.M = self.data.shape
 
